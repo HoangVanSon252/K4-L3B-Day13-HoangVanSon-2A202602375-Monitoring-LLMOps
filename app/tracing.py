@@ -4,6 +4,11 @@ import os
 from contextlib import contextmanager
 from typing import Any
 
+
+# The OTLP exporter does not follow redirects caused by a trailing slash.
+if base_url := os.getenv("LANGFUSE_BASE_URL"):
+    os.environ["LANGFUSE_BASE_URL"] = base_url.rstrip("/")
+
 try:
     from langfuse import get_client, observe, propagate_attributes
 

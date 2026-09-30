@@ -1,0 +1,7 @@
+﻿Incident window (UTC): 2026-09-30T05:11:02Z to 2026-09-30T05:11:14Z
+Affected feature: monitoring
+Responses: 5
+Server latency: min=2803 ms, max=4449 ms, average=3210.6 ms
+Dashboard threshold: P95 latency <= 3000 ms
+TTFT: 50 ms
+Symptom: latency breached while TTFT remained normal.

@@ -1,60 +1,27 @@
-# Template Alert và Runbook
+# Alerts và runbook
 
-Mỗi alert phải dựa trên triệu chứng người dùng hoặc SLO, không dựa trực tiếp vào tên implementation nội bộ.
+Các alert dưới đây dựa trên triệu chứng người dùng/SLO. Tất cả gửi tới Slack `#k4-l3b-alerts`, owner `student-2A202602375`.
 
-## Alert mẫu để tham khảo
+## Alert 1: HighLatencyP95
 
-Ví dụ dưới đây minh họa mức độ cụ thể cần có. Học viên không cần copy nguyên, nhưng ba alert trong bài nộp nên rõ ràng tương tự: điều kiện là gì, kéo dài bao lâu, ảnh hưởng tới user ra sao và người trực cần kiểm tra gì trước.
+- Severity: `warning`; duration: `5m`.
+- Điều kiện: `p95(latency_ms) > 3000` trong 5 phút.
+- Ảnh hưởng: người dùng chờ phản hồi lâu hơn mục tiêu SLO.
+- Kiểm tra: mở panel Latency để khoanh vùng thời gian; lọc `response_sent` có latency cao và lấy `correlation_id`; mở trace cùng ID để so sánh retrieval và generation.
+- Mitigation: tắt incident/practice scenario; giảm tải hoặc đặt timeout cho retrieval; chỉ rollback prompt nếu trace chứng minh prompt/generation là nguyên nhân.
 
-- Tên: `HighLatencyP95`
-- Severity: `warning`
-- Duration: `5m`
-- Kênh thông báo: Slack `#k4-l3b-alerts`
-- SLI/SLO liên quan: latency P95 của `response_sent.latency_ms`
-- Điều kiện và thời gian duy trì: `p95(latency_ms) > 3000ms` trong 5 phút
-- Ảnh hưởng tới người dùng: người dùng phải chờ lâu hơn trước khi nhận câu trả lời
-- Ba bước kiểm tra đầu tiên:
-  1. Mở dashboard latency để xác nhận P95/P99 và khoảng thời gian tăng.
-  2. Lọc `data/logs.jsonl` trong khoảng đó, lấy một `correlation_id` có `latency_ms` cao.
-  3. Mở trace cùng `correlation_id` trên Langfuse, so sánh các span chính để xác định bước nào bất thường.
-- Mitigation tạm thời: dựa trên evidence thực tế để rollback prompt, khôi phục cấu hình liên quan, tắt practice scenario hoặc giảm tải khi demo.
-- Owner: `student-<MSSV>`
+## Alert 2: LowRetrievalSuccess
 
-## Alert 1
+- Severity: `critical`; duration: `5m`.
+- Điều kiện: `retrieval_success_rate < 90` trong 5 phút.
+- Ảnh hưởng: câu trả lời có thể thiếu context hoặc giảm chất lượng.
+- Kiểm tra: mở panel Errors & retrieval; lọc log có `tool_success=false`; mở trace theo `correlation_id` và kiểm tra observation `retrieval`.
+- Mitigation: kiểm tra nguồn tài liệu/vector store, kết nối và timeout; bật phản hồi an toàn khi không có context; khôi phục cấu hình retrieval gần nhất nếu có regression.
 
-- Tên:
-- Severity:
-- Duration:
-- Kênh thông báo: Slack
-- SLI/SLO liên quan:
-- Điều kiện và thời gian duy trì:
-- Ảnh hưởng tới người dùng:
-- Ba bước kiểm tra đầu tiên:
-- Mitigation tạm thời:
-- Owner:
+## Alert 3: HighCostSpike
 
-## Alert 2
-
-- Tên:
-- Severity:
-- Duration:
-- Kênh thông báo: Slack
-- SLI/SLO liên quan:
-- Điều kiện và thời gian duy trì:
-- Ảnh hưởng tới người dùng:
-- Ba bước kiểm tra đầu tiên:
-- Mitigation tạm thời:
-- Owner:
-
-## Alert 3
-
-- Tên:
-- Severity:
-- Duration:
-- Kênh thông báo: Slack
-- SLI/SLO liên quan:
-- Điều kiện và thời gian duy trì:
-- Ảnh hưởng tới người dùng:
-- Ba bước kiểm tra đầu tiên:
-- Mitigation tạm thời:
-- Owner:
+- Severity: `warning`; duration: `1h`.
+- Điều kiện: `daily_cost_usd > 2.5` trong một giờ.
+- Ảnh hưởng: vượt ngân sách vận hành, thường đi kèm traffic hoặc token tăng bất thường.
+- Kiểm tra: so sánh panel Cost, Tokens và Traffic; lọc log theo model/feature; mở generation observation để kiểm tra token và prompt version.
+- Mitigation: áp dụng rate limit, giới hạn output token và rollback prompt nếu version mới làm token/cost tăng rõ rệt.

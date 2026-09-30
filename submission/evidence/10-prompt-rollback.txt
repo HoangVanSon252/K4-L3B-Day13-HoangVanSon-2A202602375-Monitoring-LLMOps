@@ -1,0 +1,5 @@
+﻿Rollback completed: production -> day13-chat v1
+Candidate retained: candidate -> day13-chat v2
+Verified rollback trace: e694a70dec209a636297fde647d79147
+Verified candidate trace: e7149b41dfafb17fa8bbd3250603b73b
+The production label was restored to v1 after the candidate trace was emitted.

@@ -140,6 +140,7 @@ Chạy baseline ở terminal thứ hai:
 python scripts/load_test.py
 python scripts/validate_logs.py
 python scripts/validate_dashboard.py
+python scripts/build_dashboard.py
 python -m pytest -q
 ```
 

@@ -1,0 +1,2 @@
+﻿Synthetic input: Email test@example.com, phone 0912345678, CCCD 012345678901, card 4111 1111 1111 1111
+Scrubbed output: Email [REDACTED_EMAIL], phone [REDACTED_PHONE_VN], CCCD [REDACTED_CCCD], card [REDACTED_CREDIT_CARD]

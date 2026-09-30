@@ -1,0 +1,17 @@
+﻿Root traces observed: 38
+
+Session: prompt-v2-confirmed
+Trace ID: e7149b41dfafb17fa8bbd3250603b73b
+Prompt: day13-chat v2
+Model: claude-sonnet-4-5
+Usage: {'input': 58, 'output': 144, 'total': 202}
+Cost: {'total': 0.002334}
+Prompt label metadata: candidate
+
+Session: prompt-v1-rollback
+Trace ID: e694a70dec209a636297fde647d79147
+Prompt: day13-chat v1
+Model: claude-sonnet-4-5
+Usage: {'input': 28, 'output': 148, 'total': 176}
+Cost: {'total': 0.002304}
+Prompt label metadata: baseline
